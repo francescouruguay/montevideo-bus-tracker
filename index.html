@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montevideo Bus Tracker</title>
+    
+    <!-- Bootstrap CSS (Replit theme) -->
+    <link rel="stylesheet" href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" 
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" 
+          crossorigin=""/>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" 
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" 
+            crossorigin=""></script>
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet Rotated Marker Plugin -->
+    <script src="{{ url_for('static', filename='js/leaflet-rotatedmarker.js') }}"></script>
+</head>
+<body>
+    <div class="container-fluid p-0">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-0">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                    <i class="fas fa-bus me-2"></i>
+                    Montevideo Bus Tracker
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+                        data-bs-target="#navbarSupportedContent">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <div class="d-flex ms-auto">
+                        <div class="input-group">
+                            <label class="input-group-text" for="lineFilter">
+                                <i class="fas fa-filter"></i> Line
+                            </label>
+                            <select class="form-select" id="lineFilter">
+                                <option value="">All Lines</option>
+                                <!-- Will be populated dynamically -->
+                            </select>
+                        </div>
+                        <button class="btn btn-outline-info ms-2" id="refreshButton" title="Refresh Data">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        
+        <div id="statusBar" class="alert alert-info m-0 rounded-0 text-center" role="alert">
+            Loading bus data...
+        </div>
+        
+        <div id="map"></div>
+        
+        <div id="infoPanel" class="card bg-dark text-light">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Bus Information</h5>
+            </div>
+            <div class="card-body">
+                <p>Select a bus on the map to see details.</p>
+                <div id="busDetails" class="d-none">
+                    <table class="table table-dark table-sm">
+                        <tr>
+                            <th>Line:</th>
+                            <td id="busLine"></td>
+                        </tr>
+                        <tr>
+                            <th>Direction:</th>
+                            <td id="busDirection"></td>
+                        </tr>
+                        <tr>
+                            <th>Speed:</th>
+                            <td id="busSpeed"></td>
+                        </tr>
+                        <tr>
+                            <th>Last Update:</th>
+                            <td id="busUpdate"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Error Modal -->
+    <div class="modal fade" id="errorModal" tabindex="-1" aria-labelledby="errorModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="errorModalBody">
+                    An error occurred while fetching data.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="retryButton">Retry</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
